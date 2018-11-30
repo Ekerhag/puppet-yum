@@ -33,6 +33,13 @@ define yum::group (
         unless  => "yum grouplist hidden '${name}' | egrep -i '^Installed.+Groups:$'",
         timeout => $timeout,
       }
+      if ($facts['os']['name'] == 'CentOS' and $facts['os']['release']['major'] == '7') {
+        exec { "yum-groupinstall-mark-${name}":
+          command => "yum groups mark install '${name}'",
+          unless  => "yum grouplist hidden '${name}' | egrep -i '^Installed.+Groups:$'",
+          timeout => $timeout,
+        }
+      }
     }
 
     'absent', 'purged': {

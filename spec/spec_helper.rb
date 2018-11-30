@@ -12,6 +12,12 @@ include RspecPuppetFacts
 default_facts = {
   puppetversion: Puppet.version,
   facterversion: Facter.version,
+  os: {
+    name: 'CentOS',
+    release: {
+      major: '6',
+    },
+  },
 }
 
 default_facts_path = File.expand_path(File.join(File.dirname(__FILE__), 'default_facts.yml'))
