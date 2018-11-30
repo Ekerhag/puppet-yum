@@ -8,7 +8,7 @@ shared_examples 'a Yum class' do |value|
   it 'contains Exec[package-cleanup_oldkernels' do
     is_expected.to contain_exec('package-cleanup_oldkernels').with(
       command: "/usr/bin/package-cleanup --oldkernels --count=#{value} -y",
-      refreshonly: true
+      refreshonly: true,
     ).that_requires('Package[yum-utils]').that_subscribes_to('Yum::Config[installonly_limit]')
   end
 end
@@ -51,7 +51,7 @@ describe 'yum' do
             'extras-source',
             'base-debuginfo',
             'centosplus',
-            'centos-media'
+            'centos-media',
           ]
           case facts[:os]['release']['major']
           when '7'
@@ -79,7 +79,7 @@ describe 'yum' do
             'epel-source',
             'epel-testing',
             'epel-testing-debuginfo',
-            'epel-testing-source'
+            'epel-testing-source',
           ]
         when 'RedHat'
           it { is_expected.to have_yumrepo_resource_count(18) }
@@ -101,7 +101,7 @@ describe 'yum' do
             'rhui-REGION-rhel-server-source-rh-common',
             'rhui-REGION-rhel-server-supplementary',
             'rhui-REGION-rhel-server-debug-supplementary',
-            'rhui-REGION-rhel-server-source-supplementary'
+            'rhui-REGION-rhel-server-source-supplementary',
           ]
         else
           it { is_expected.to have_yumrepo_resource_count(0) }
@@ -121,7 +121,7 @@ describe 'yum' do
               'extras-source',
               'base-debuginfo',
               'centosplus',
-              'centos-media'
+              'centos-media',
             ]
           when 'Amazon'
             it { is_expected.to have_yumrepo_resource_count(16) }
@@ -141,7 +141,7 @@ describe 'yum' do
               'epel-source',
               'epel-testing',
               'epel-testing-debuginfo',
-              'epel-testing-source'
+              'epel-testing-source',
             ]
           when 'RedHat'
             it { is_expected.to have_yumrepo_resource_count(18) }
@@ -163,7 +163,7 @@ describe 'yum' do
               'rhui-REGION-rhel-server-source-rh-common',
               'rhui-REGION-rhel-server-supplementary',
               'rhui-REGION-rhel-server-debug-supplementary',
-              'rhui-REGION-rhel-server-source-supplementary'
+              'rhui-REGION-rhel-server-source-supplementary',
             ]
           else
             it { is_expected.to have_yumrepo_resource_count(0) }
@@ -175,7 +175,7 @@ describe 'yum' do
         # TODO: This should be generated with something like `lookup('yum::repos').keys`,
         # but the setup for `Puppet::Pops::Lookup` is to complicated to be worth it as of
         # this writing (2017-04-11).  For now, we just pull from `repos.yaml`.
-        repos_yaml_data = YAML.load(File.read('./spec/fixtures/modules/yum/data/repos.yaml'))
+        repos_yaml_data = YAML.safe_load(File.read('./spec/fixtures/modules/yum/data/repos.yaml'))
         supported_repos = repos_yaml_data['yum::repos'].keys
 
         supported_repos.each do |supported_repo|
@@ -210,7 +210,7 @@ describe 'yum' do
           it 'raises a useful error' do
             is_expected.to raise_error(
               Puppet::PreformattedError,
-              %r{The value or ensure for `\$yum::config_options\[installonly_limit\]` must be an Integer, but it is not\.}
+              %r{The value or ensure for `\$yum::config_options\[installonly_limit\]` must be an Integer, but it is not\.},
             )
           end
         end

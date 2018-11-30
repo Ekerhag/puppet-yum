@@ -26,7 +26,7 @@ describe 'yum::gpgkey' do
     let(:params) do
       {
         content: 'a_non_empty_string',
-        source: 'puppet:///files/test-key'
+        source: 'puppet:///files/test-key',
       }
     end
 
